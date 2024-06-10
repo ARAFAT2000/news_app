@@ -28,8 +28,5 @@ List<CatagoryModel> getCategories() {
   CatagoryModel catagory6= CatagoryModel(
       categoryName: 'Entertainment');
   categories.add(catagory6);
-
-
-
   return categories;
 }
