@@ -4,9 +4,8 @@ import 'news_model.dart';
 List<CatagoryModel> getCategories() {
   // news category list
   List<CatagoryModel> categories = [];
-
   CatagoryModel catagory1= CatagoryModel(
-      categoryName: 'Science');
+      categoryName: 'General');
   categories.add(catagory1);
 
   CatagoryModel catagory2= CatagoryModel(
@@ -18,7 +17,7 @@ List<CatagoryModel> getCategories() {
   categories.add(catagory3);
 
   CatagoryModel catagory4= CatagoryModel(
-      categoryName: 'General');
+      categoryName: 'Science');
   categories.add(catagory4);
 
   CatagoryModel catagory5= CatagoryModel(

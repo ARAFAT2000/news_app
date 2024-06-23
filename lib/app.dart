@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/Screen/home_screen.dart';
+import 'Screen/navbar_screen.dart';
+import 'Splass/splass_screen.dart';
 
 
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: false,
       ),
-      home: HomeScreen(),
+      home: SplassScreen(),
     );
   }
 }

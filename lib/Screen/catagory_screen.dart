@@ -35,12 +35,18 @@ class _SelectedCategoryNewsState extends State<SelectedCategoryNews> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        foregroundColor: Colors.white,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: InkWell(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios_outlined,color: Colors.black)),
         title: Text(
           widget.category,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.black
           ),
         ),
       ),

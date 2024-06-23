@@ -12,12 +12,14 @@ class NewsModel{
   String? urlToImage;
   String? author;
   String? content;
+  String? publishedAt;
 
   NewsModel({
     required this.title,
     required this.description,
     required this.urlToImage,
     required this.author,
-    required this.content
+    required this.content,
+    required this.publishedAt
   });
 }
