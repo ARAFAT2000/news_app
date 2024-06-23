@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Screen/news_details.dart';
-
 import '../Model/news_model.dart';
 import '../Services/services.dart';
 
-
 class SelectedCategoryNews extends StatefulWidget {
-  String category;
+  final String category;
   SelectedCategoryNews({super.key, required this.category});
 
   @override
@@ -15,13 +13,14 @@ class SelectedCategoryNews extends StatefulWidget {
 
 class _SelectedCategoryNewsState extends State<SelectedCategoryNews> {
   List<NewsModel> articles = [];
-  bool isLoadin = true;
+  bool isLoading = true;
+
   getNews() async {
     CategoryNews news = CategoryNews();
     await news.getNews(widget.category);
     articles = news.dataStore;
     setState(() {
-      isLoadin = false;
+      isLoading = false;
     });
   }
 
@@ -33,24 +32,29 @@ class _SelectedCategoryNewsState extends State<SelectedCategoryNews> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
         leading: InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios_outlined,color: Colors.black)),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_ios_outlined, color: Colors.black),
+        ),
         title: Text(
           widget.category,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.black
+            color: Colors.black,
+            fontSize: screenWidth * 0.05, // Responsive font size
           ),
         ),
       ),
-      body: isLoadin
+      body: isLoading
           ? const Center(
         child: CircularProgressIndicator(),
       )
@@ -71,27 +75,31 @@ class _SelectedCategoryNewsState extends State<SelectedCategoryNews> {
                 );
               },
               child: Container(
-                margin: const EdgeInsets.all(15),
+                margin: EdgeInsets.symmetric(
+                  vertical: screenHeight * 0.02,
+                  horizontal: screenWidth * 0.05,
+                ),
                 child: Column(
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
                         article.urlToImage!,
-                        height: 250,
-                        width: 400,
+                        height: screenHeight * 0.3,
+                        width: screenWidth,
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: screenHeight * 0.02),
                     Text(
                       article.title!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: screenWidth * 0.045,
                       ),
                     ),
-                    const Divider(thickness: 2),
+                    SizedBox(height: screenHeight * 0.01),
+                    Divider(thickness: 2),
                   ],
                 ),
               ),

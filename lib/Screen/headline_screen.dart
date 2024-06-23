@@ -16,13 +16,14 @@ class HeadLineScreen extends StatefulWidget {
 }
 
 class _HeadLineScreenState extends State<HeadLineScreen> {
-  List<NewsModel> articles =[];
-  List<CatagoryModel> catagory=[];
+  List<NewsModel> articles = [];
+  List<CatagoryModel> category = [];
   bool isLoading = true;
-  getNewsApi()async{
+
+  getNewsApi() async {
     NewsApi newsApi = NewsApi();
     await newsApi.getNews();
-    articles =newsApi.newsStore;
+    articles = newsApi.newsStore;
     setState(() {
       isLoading = false;
     });
@@ -30,59 +31,66 @@ class _HeadLineScreenState extends State<HeadLineScreen> {
 
   @override
   void initState() {
-    catagory=getCategories();
+    category = getCategories();
     getNewsApi();
-    // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // Get screen width and height
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
-      body:isLoading? Center(child: CircularProgressIndicator(),): SingleChildScrollView(
+    return Scaffold(
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
               CustomAppber(
                   icon: InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(Icons.arrow_back_ios_rounded)), title: 'Headline News'),
-
+                      child: Icon(Icons.arrow_back_ios_rounded)),
+                  title: 'Headline News'),
               SizedBox(
-                height: 15,
+                height: screenHeight * 0.02,
               ),
               Container(
-                height: 55,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
+                height: screenHeight * 0.07,
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04,
                 ),
                 child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: catagory.length,
-                    itemBuilder: (context,index){
+                    itemCount: category.length,
+                    itemBuilder: (context, index) {
                       return Padding(
-                        padding:EdgeInsets.only(right: 15),
+                        padding: EdgeInsets.only(right: screenWidth * 0.04),
                         child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>
-                                    SelectedCategoryNews(category: catagory[index].categoryName!)
-                                ));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SelectedCategoryNews(category: category[index].categoryName!)));
                           },
                           child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.all(15),
+                              padding: EdgeInsets.all(screenWidth * 0.04),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(
-                                  child: Text(catagory[index].categoryName.toString(),
-                                    style: const TextStyle(
+                                  child: Text(
+                                    category[index].categoryName.toString(),
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: screenWidth * 0.045,
                                       color: Colors.black,
                                     ),
                                   ))),
@@ -90,50 +98,56 @@ class _HeadLineScreenState extends State<HeadLineScreen> {
                       );
                     }),
               ),
-              //news_home
+              // news_home
               ListView.builder(
                   itemCount: articles.length,
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
-                  itemBuilder: (context,index){
-                    return Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>
-                                    NewsDetails(newsdecs: articles[index])));
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 200,
-                                width: 400,
-                                decoration: BoxDecoration(
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),  // Match this with the Container's borderRadius
-                                  child: Image.network(
-                                    articles[index].urlToImage.toString(),
-                                    fit: BoxFit.fill,
-                                  ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.all(screenWidth * 0.03),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      NewsDetails(newsdecs: articles[index])));
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: screenHeight * 0.25,
+                              width: screenWidth,
+                              decoration: BoxDecoration(),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  articles[index].urlToImage.toString(),
+                                  fit: BoxFit.fill,
                                 ),
                               ),
-
-                              ModiFyText(text: articles[index].title.toString(),
-                                  size: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(DateFormat('yyyy-MM-dd').format(DateTime.parse(articles[index].publishedAt.toString()))),
-                                  Icon(Icons.arrow_forward_ios),
-                                ],
-                              ),
-                              Divider(thickness: 4,),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: screenHeight * 0.015,
+                            ),
+                            ModiFyText(
+                                text: articles[index].title.toString(),
+                                size: screenWidth * 0.05),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(DateFormat('yyyy-MM-dd').format(
+                                    DateTime.parse(articles[index].publishedAt.toString()))),
+                                Icon(Icons.arrow_forward_ios),
+                              ],
+                            ),
+                            Divider(
+                              thickness: 4,
+                            ),
+                          ],
                         ),
                       ),
                     );
